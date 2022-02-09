@@ -6,6 +6,8 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,11 +27,15 @@ public class Pedido implements Serializable{
 	private String urlImagem;
 	private String descricao;
 	
+	@Enumerated(EnumType.STRING)
+	private StatusPedido status;
+	
 	public Pedido() {
 	}
-	
+
 	public Pedido(Long id, String nomeProduto, BigDecimal valorNegociado, LocalDate dataDaEntrega, String urlProduto,
-			String urlImagem, String descricao) {
+			String urlImagem, String descricao, StatusPedido status) {
+		super();
 		this.id = id;
 		this.nomeProduto = nomeProduto;
 		this.valorNegociado = valorNegociado;
@@ -37,6 +43,7 @@ public class Pedido implements Serializable{
 		this.urlProduto = urlProduto;
 		this.urlImagem = urlImagem;
 		this.descricao = descricao;
+		this.status = status;
 	}
 
 	public Long getId() {
@@ -98,6 +105,14 @@ public class Pedido implements Serializable{
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
+	}
+
+	public StatusPedido getStatus() {
+		return status;
+	}
+
+	public void setStatus(StatusPedido status) {
+		this.status = status;
 	}
 
 	@Override

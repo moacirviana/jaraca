@@ -3,6 +3,7 @@ package br.jus.tream.jaraca.dto;
 import javax.validation.constraints.NotBlank;
 
 import br.jus.tream.jaraca.model.Pedido;
+import br.jus.tream.jaraca.model.StatusPedido;
 
 public class RequisicaoNovoPedido {
 	
@@ -44,6 +45,7 @@ public class RequisicaoNovoPedido {
 		pedido.setNomeProduto(nomeProduto);
 		pedido.setUrlImagem(urlImagem);
 		pedido.setUrlProduto(urlProduto);
+		pedido.setStatus(StatusPedido.AGUARDANDO);
 		return pedido;
 	}
 }
