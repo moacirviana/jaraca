@@ -26,7 +26,7 @@
 					<div th:case="'APROVADO'" class="card-header alert-success" th:text="${pedido.nomeProduto}">Nome do Produto</div>
 					<div th:case="'ENTREGUE'" class="card-header alert-dark" th:text="${pedido.nomeProduto}">Nome do Produto</div>
 				</th:block>
-				
+				<span th:text="${pedido.nomeProduto}"></span>
 				<div class="card-body">
 					<div class="row">
 						<div class="col-12 col-sm-8 mb-3">
@@ -38,7 +38,7 @@
 							<div>Produto</div> 
 							<div> <input class="form-control" th:value="${pedido.urlProduto}" value="url do produto" /></div>
 							 
-							<div>DescriÃ§Ã£o</div>
+							<div>Descrição</div>
 							<div>
 								<textarea class="form-control" th:text="${pedido.descricao}">descriÃ§Ã£o do pedido</textarea>
 							</div>

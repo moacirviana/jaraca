@@ -1,5 +1,6 @@
 package br.jus.tream.jaraca.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,8 @@ public class HomeController {
 	private PedidoRepository pedidoRepository;
 	
 	@GetMapping
-    public ModelAndView home() {
-        List<Pedido> pedidos = pedidoRepository.findAll();
+    public ModelAndView home(Principal principal) {
+        List<Pedido> pedidos = pedidoRepository.findAllByUsuario(principal.getName());
         ModelAndView mv = new ModelAndView("home");
         mv.addObject("pedidos", pedidos);
         return mv; 

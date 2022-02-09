@@ -8,9 +8,11 @@ import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 
 @Entity
@@ -27,6 +29,9 @@ public class Pedido implements Serializable{
 	private String urlImagem;
 	private String descricao;
 	
+	@ManyToOne(fetch = FetchType.LAZY)
+	private User user;
+	
 	@Enumerated(EnumType.STRING)
 	private StatusPedido status;
 	
@@ -34,8 +39,7 @@ public class Pedido implements Serializable{
 	}
 
 	public Pedido(Long id, String nomeProduto, BigDecimal valorNegociado, LocalDate dataDaEntrega, String urlProduto,
-			String urlImagem, String descricao, StatusPedido status) {
-		super();
+			String urlImagem, String descricao, User user, StatusPedido status) {
 		this.id = id;
 		this.nomeProduto = nomeProduto;
 		this.valorNegociado = valorNegociado;
@@ -43,6 +47,7 @@ public class Pedido implements Serializable{
 		this.urlProduto = urlProduto;
 		this.urlImagem = urlImagem;
 		this.descricao = descricao;
+		this.user = user;
 		this.status = status;
 	}
 
@@ -113,6 +118,14 @@ public class Pedido implements Serializable{
 
 	public void setStatus(StatusPedido status) {
 		this.status = status;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	@Override
