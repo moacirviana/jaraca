@@ -3,6 +3,8 @@ package br.jus.tream.jaraca.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +23,10 @@ public class HomeController {
 	
 	@GetMapping
     public ModelAndView home() {
-        List<Pedido> pedidos = pedidoRepository.findByStatus(StatusPedido.ENTREGUE);
+		Sort sort = Sort.by("dataDaEntrega").ascending();
+		PageRequest paginacao = PageRequest.of(0, 5, sort);
+		
+        List<Pedido> pedidos = pedidoRepository.findByStatus(StatusPedido.ENTREGUE, paginacao);
         ModelAndView mv = new ModelAndView("home");
         mv.addObject("pedidos", pedidos);
         return mv; 

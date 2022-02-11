@@ -1,6 +1,8 @@
 package br.jus.tream.jaraca.model;
 
+import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -10,8 +12,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
+// @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "users")
-public class User {
+public class User implements Serializable {
+	private static final long serialVersionUID = -4249357663301769469L;
 	
 	@Id
 	private String username;
@@ -47,6 +51,31 @@ public class User {
 	}
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
+	}
+
+	public List<Pedido> getPedidos() {
+		return pedidos;
+	}
+
+	public void setPedidos(List<Pedido> pedidos) {
+		this.pedidos = pedidos;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(username);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		return Objects.equals(username, other.username);
 	}
 	
 	

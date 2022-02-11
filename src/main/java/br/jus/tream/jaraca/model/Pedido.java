@@ -14,8 +14,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
+// @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Pedido implements Serializable{
 	private static final long serialVersionUID = -4305328656655660096L;
 	
@@ -29,6 +32,7 @@ public class Pedido implements Serializable{
 	private String urlImagem;
 	private String descricao;
 	
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
 	private User user;
 	
