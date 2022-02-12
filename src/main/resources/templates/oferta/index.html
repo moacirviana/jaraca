@@ -21,16 +21,27 @@
 							 
 							<div>Descrição</div>
 							<div>
-								<textarea class="form-control" >{{pedido.descricao}}</textarea>
+								<textarea class="disabled form-control" >{{pedido.descricao}}</textarea>
 							</div>
 							<div class="row ">
-								<div class="col-md-5">Valor: <input class="form-control" v-model="pedido.valorNegociado"/> </div>
-								<div class="col-md-6">Data da entrega: <input class="form-control" v-model="pedido.dataDaEntrega"/></div>
-							</div>
+								<div class="col-md-5">
+								    Valor: <input v-bind:class="{'is-invalid':pedido.erros.valor!=''}" class="form-control" v-model="pedido.valorNegociado"/>
+								    <div v-if="pedido.erros.valor" class="invalid-feedback">
+										{{pedido.erros.valor}}
+									</div> 
+								</div>
+								<div class="col-md-6">
+								   Data da entrega: <input v-bind:class="{'is-invalid':pedido.erros.dataDaEntrega!=''}" class="form-control" v-model="pedido.dataDaEntrega"/>
+								   <div v-if="pedido.erros.dataDaEntrega" class="invalid-feedback">
+										{{pedido.erros.dataDaEntrega}}
+								  </div>
+								 </div>
+								  
+							  </div>
 							<div class="row ">
 								<div class="col-md-12">Comentario <input class="form-control" v-model="pedido.comentario"/> </div>
 							</div>
-							<button v-if="pedido.ofertaEnviada" class="btn btn-success mt-2" type="button">Enviar oferta</button>
+							<button v-if="pedido.ofertaEnviada" class="btn btn-success mt-2" type="button">Enviada</button>
 							<button v-else v-on:click="enviarOferta(pedido)" class="btn btn-primary mt-2" type="submit">Enviar oferta</button>
 						</div>
 						<div class="col-12 col-sm-4">
@@ -51,7 +62,7 @@
 		  el: '#ofertas',
 		  data () {
 		    return {
-		      pedidos: []
+		      pedidos: [] 
 		    }
 		  },
 		  mounted () {
@@ -59,20 +70,35 @@
 		      .get('/api/pedidos/aguardando')
 		      .then(response => {
 		    	  // criando um atributo que não existe no json (ofertaEnviada)
-		    	  response.data.forEach(pedido => pedido.ofertaEnviada= false)
+		    	  response.data.forEach(pedido =>{ 
+		    		  pedido.ofertaEnviada= false; 
+		    		  pedido.erros = {
+		    				 valor: '',
+		    				 dataDaEntrega: ''
+		    		      }
+		    		  })
 		    	  this.pedidos = response.data
 		      })
 		  },
 		  methods:{
 			  enviarOferta: function (pedido){
+				  pedido.erros = {
+		    		 valor: '',
+		    		 dataDaEntrega: ''
+		    	   }
 				  axios
 			      .post('/api/ofertas', {
-			    	  pedidodId: pedido.id,
-			    	  valor: pedido.ValorNegociado,
+			    	  pedidoId: pedido.id,
 			    	  dataDaEntrega: pedido.dataDaEntrega,
-			    	  comentario: pedido.comentario
+			          valor: pedido.valorNegociado,
+			          comentario: pedido.comentario
 			      })
 			      .then(response => pedido.ofertaEnviada = true)
+			      .catch(error => {
+			    	      error.response.data.errors.forEach(error => {
+			    		  pedido.erros[error.field]=error.defaultMessage;
+			    	  })
+			      })
 			  }
 		  }
 	})	  
